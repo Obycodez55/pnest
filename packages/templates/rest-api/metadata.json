@@ -1,0 +1,7 @@
+{
+    "name": "rest-api",
+    "description": "A fully-configured REST API with OpenAPI documentation",
+    "version": "0.1.0",
+    "author": "PNest Team",
+    "tags": ["api", "rest", "swagger"]
+  }

@@ -1,0 +1,36 @@
+{
+    "name": "@pnest/plugin-logger",
+    "version": "0.1.0",
+    "description": "Logging plugin for PNest",
+    "main": "dist/index.js",
+    "scripts": {
+      "build": "tsc",
+      "dev": "tsc -w"
+    },
+    "pnest": {
+      "name": "logger",
+      "version": "0.1.0",
+      "description": "Logging integration for NestJS applications",
+      "providers": [
+        {
+          "name": "winston",
+          "description": "Winston logger integration",
+          "isDefault": true
+        },
+        {
+          "name": "pino", 
+          "description": "Pino logger integration"
+        }
+      ]
+    },
+    "dependencies": {
+      "@nestjs/common": "^9.0.0"
+    },
+    "devDependencies": {
+      "typescript": "^4.9.5"
+    },
+    "peerDependencies": {
+      "@nestjs/common": "^9.0.0",
+      "@nestjs/core": "^9.0.0"
+    }
+  }
