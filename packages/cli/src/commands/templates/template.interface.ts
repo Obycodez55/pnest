@@ -10,3 +10,8 @@ export interface TemplateCreateOptions{
   skipGit: boolean;
   skipInstall: boolean;
 }
+
+export interface ProjectCreateOptions extends TemplateCreateOptions {
+  name?: string;
+  directory?: string;
+}
