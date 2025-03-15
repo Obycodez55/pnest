@@ -3,7 +3,7 @@ import { PluginManifest, PNestPlugin } from "./plugin.interface";
 import fs from 'fs-extra';
 import chalk from "chalk";
 import execa from "execa";
-import { isNestProject } from "../../utils/nest-cli.utils";
+import { NestUtils } from '../nest/nest.utils';
 
 const PLUGIN_REGISTRY_PATH = path.join(__dirname, '../../../plugins');
 const PROJECT_CONFIG_PATH = path.join(process.cwd(), 'pnest.json');
@@ -59,7 +59,7 @@ export class PluginUtils {
      */
     static async installPlugin(plugin: PluginManifest, provider: string): Promise<void> {
         // Check if current directory is a NestJS project
-        if (!await isNestProject()) {
+        if (!await NestUtils.isNestProject()) {
             throw new Error('Not a NestJS project. Please run this command in a NestJS project directory.');
         }
 

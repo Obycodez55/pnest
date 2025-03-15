@@ -1,8 +1,9 @@
 import { Command } from "commander";
 import { registerTemplateCommands } from "./commands/template.commands";
-import { registerPassthroughCommands } from "./commands/passthrough.commands";
 import { PluginCommands } from "./commands/plugins/plugin.commands";
 import { PluginHandlers } from "./commands/plugins/plugins.handlers";
+import { NestHandlers } from "./commands/nest/nest.handlers";
+import { NestCommand } from "./commands/nest/nest.commands";
 
 
 export function registerCommands(program: Command){
@@ -14,5 +15,6 @@ export function registerCommands(program: Command){
     registerTemplateCommands(program);
     
     // Register passthrough commands
-    registerPassthroughCommands(program);
+    const nestHandler = new NestHandlers();
+    new NestCommand(program, nestHandler).register();
 }
