@@ -20,3 +20,7 @@ export interface PluginManifest {
     isDefault?: boolean;
   }[];
 }
+
+export interface ListPluginsOptions {
+  installed?: boolean;
+}
