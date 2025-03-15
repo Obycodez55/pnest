@@ -3,8 +3,7 @@ import { PluginHandlers } from './plugins.handlers';
 
 export class PluginCommands {
     private readonly program: Command;
-    private pluginHandler: PluginHandlers;
-    constructor(program: Command, pluginHandler: PluginHandlers) {
+    constructor(program: Command, private readonly pluginHandler: PluginHandlers) {
         this.program = program.command('plugin')
             .description('Manage PNest plugins');
     }

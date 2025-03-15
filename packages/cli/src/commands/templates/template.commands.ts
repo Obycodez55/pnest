@@ -14,7 +14,7 @@ export class TemplateCommand{
 
     registerCommands(): void {
         this.program
-            .command("[template-name]")
+            .argument("template-name")
             .description("Create a new project from a template")
             .option("-n, --name <project-name>", "Name of the project")
             .option("-d, --directory <directory>", "Output directory")

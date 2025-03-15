@@ -14,7 +14,7 @@ export class TemplateHandlers {
         // Get the list of templates
         const spinner = logger.spinner('Fetching available templates...');
         const templates = await TemplateUtils.getAvailableTemplates();
-        spinner.stop();
+        spinner.succeed();
         // Display the templates
         logger.section('Available Templates');
         templates.forEach(template => {

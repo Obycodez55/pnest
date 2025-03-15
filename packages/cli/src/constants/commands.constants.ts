@@ -7,3 +7,4 @@ export const NEST_COMMANDS = [
   'add',
   'info'
 ];
+

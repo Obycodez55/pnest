@@ -3,6 +3,7 @@ import { Template, TemplateCreateOptions } from "./template.interface";
 import fs from 'fs-extra';
 import chalk from "chalk";
 import execa from "execa";
+import { EXCLUDE_PATTERNS } from "../../constants/template.constants";
 
 export class TemplateUtils {
     private static TEMPLATES_PATH = path.join(__dirname, '../../../../templates');
@@ -70,7 +71,7 @@ export class TemplateUtils {
         await fs.ensureDir(outputDir);
 
         // 3. Copy template files
-        await fs.copy(templateDir, outputDir);
+        await TemplateUtils.copyTemplateFiles(templateDir, outputDir);
 
         // 4. Process template files (replace placeholders)
         console.log(chalk.blue('Processing template files...'));
@@ -81,11 +82,12 @@ export class TemplateUtils {
             // Add more variables as needed
         });
 
-        // 5. Install dependencies
-        console.log(chalk.blue('Installing dependencies...'));
+
 
         try {
             if (!options.skipGit) {
+                // 5. Install dependencies
+                console.log(chalk.blue('Installing dependencies...'));
                 await execa('npm', ['install'], {
                     cwd: outputDir,
                     stdio: 'inherit'
@@ -113,6 +115,7 @@ export class TemplateUtils {
         const files = await fs.readdir(directory);
 
         for (const file of files) {
+            if(EXCLUDE_PATTERNS.includes(file)) continue;
             const filePath = path.join(directory, file);
             const stat = await fs.stat(filePath);
 
@@ -140,4 +143,25 @@ export class TemplateUtils {
             }
         }
     };
+
+    /**
+* Copy files and directories from one location to another
+*/
+    private static async copyTemplateFiles(sourceDir: string, targetDir: string): Promise<void> {
+        const items = await fs.readdir(sourceDir);
+        for (const item of items) {
+            if(EXCLUDE_PATTERNS.includes(item)) continue;
+            const sourcePath = path.join(sourceDir, item);
+            const targetPath = path.join(targetDir, item);
+
+            const stat = await fs.stat(sourcePath);
+
+            if (stat.isDirectory()) {
+                await fs.ensureDir(targetPath);
+                await TemplateUtils.copyTemplateFiles(sourcePath, targetPath);
+            } else {
+                await fs.copyFile(sourcePath, targetPath);
+            }
+        }
+    }
 }
