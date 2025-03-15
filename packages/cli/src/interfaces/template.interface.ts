@@ -5,3 +5,8 @@ export interface Template {
   author: string;
   tags: string[];
 }
+
+export interface TemplateCreateOptions{
+  skipGit: boolean;
+  skipInstall: boolean;
+}

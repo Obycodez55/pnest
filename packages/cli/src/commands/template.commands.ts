@@ -6,6 +6,7 @@ import {
   getAvailableTemplates, 
   createProjectFromTemplate 
 } from '../utils/template.utils';
+import { TemplateCreateOptions } from '../interfaces/template.interface';
 
 export function registerTemplateCommands(program: Command): void {
   program
@@ -13,6 +14,8 @@ export function registerTemplateCommands(program: Command): void {
     .description('Create a new project from a template')
     .option('-n, --name <project-name>', 'Name of the project')
     .option('-d, --directory <directory>', 'Output directory')
+    .option('-sg, --skip-git', 'Initialize a git repository', false)
+    .option('-si, --skip-install', 'Skip installing dependencies', false)
     .action(async (templateName, options) => {
       try {
         const templates = await getAvailableTemplates();
@@ -55,11 +58,16 @@ export function registerTemplateCommands(program: Command): void {
           }]);
           projectName = response.name;
         }
-        
+
+        // Get options
+        let createOptions: TemplateCreateOptions = {
+          skipGit: options.skipGit,
+          skipInstall: options.skipInstall
+        };
         // Get output directory if not provided
         let outputDir = options.directory || projectName;
         
-        await createProjectFromTemplate(template, projectName, outputDir);
+        await createProjectFromTemplate(template, projectName, outputDir, createOptions);
         console.log(chalk.green(`Project created successfully in ${outputDir}!`));
         console.log(chalk.cyan('Next steps:'));
         console.log(`  cd ${outputDir}`);

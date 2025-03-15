@@ -1,5 +1,5 @@
 import * as path from "path";
-import { Template } from "../interfaces/template.interface";
+import { Template, TemplateCreateOptions } from "../interfaces/template.interface";
 import fs from 'fs-extra';
 import chalk from "chalk";
 import execa from "execa";
@@ -41,7 +41,8 @@ export async function getAvailableTemplates(): Promise<Template[]> {
 export async function createProjectFromTemplate(
     template: Template,
     projectName: string,
-    outputDir: string
+    outputDir: string,
+    options: TemplateCreateOptions
   ): Promise<void> {
     // 1. Check if output directory already exists
     if (await fs.pathExists(outputDir)) {
@@ -84,10 +85,19 @@ export async function createProjectFromTemplate(
     console.log(chalk.blue('Installing dependencies...'));
     
     try {
-      await execa('npm', ['install'], {
-        cwd: outputDir,
-        stdio: 'inherit'
-      });
+      if (!options.skipGit) {
+        await execa('npm', ['install'], {
+          cwd: outputDir,
+          stdio: 'inherit'
+        });
+      }
+      // 6. Initialize git repository if requested
+      if (!options.skipInstall) {
+        await execa('git', ['init'], {
+          cwd: outputDir,
+          stdio: 'inherit'
+        });
+      }
     } catch (error) {
       throw new Error(`Failed to install dependencies: ${error.message}`);
     }
