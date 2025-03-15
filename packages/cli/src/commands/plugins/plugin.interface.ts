@@ -24,3 +24,7 @@ export interface PluginManifest {
 export interface ListPluginsOptions {
   installed?: boolean;
 }
+
+export interface AddPluginOptions {
+  provider: string;
+}
