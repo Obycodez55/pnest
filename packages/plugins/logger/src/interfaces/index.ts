@@ -20,5 +20,5 @@ export interface LoggerPluginOptions {
       inteval?: number;
       maxSize?: number;
     }
-  }
+  } | boolean;
 }
