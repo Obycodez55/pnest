@@ -2,9 +2,7 @@
 import { program } from 'commander';
 import chalk from 'chalk';
 import { CLI_VERSION } from './constants/commands.constants';
-import { registerPluginCommands } from './commands/plugin.commands';
-import { registerTemplateCommands } from './commands/template.commands';
-import { registerPassthroughCommands } from './commands/passthrough.commands';
+import { registerCommands } from './register';
 
 // Setup CLI program
 program
@@ -12,10 +10,7 @@ program
   .description('Extended NestJS CLI with plugin management')
   .version(CLI_VERSION);
 
-// Register all command groups
-registerPluginCommands(program);
-registerTemplateCommands(program);
-registerPassthroughCommands(program);
+registerCommands(program);
 
 // Handle unknown commands by passing to NestJS CLI
 program.on('command:*', () => {
