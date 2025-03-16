@@ -85,7 +85,7 @@ export class TemplateUtils {
 
 
         try {
-            if (!options.skipGit) {
+            if (!options.skipInstall) {
                 // 5. Install dependencies
                 console.log(chalk.blue('Installing dependencies...'));
                 await execa('npm', ['install'], {
@@ -94,7 +94,7 @@ export class TemplateUtils {
                 });
             }
             // 6. Initialize git repository if requested
-            if (!options.skipInstall) {
+            if (!options.skipGit) {
                 await execa('git', ['init'], {
                     cwd: outputDir,
                     stdio: 'inherit'
