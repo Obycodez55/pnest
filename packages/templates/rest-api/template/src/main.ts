@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { AppEnum } from './common/enum/app.enum';
+import { AppEnum } from './common/enums/app.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
