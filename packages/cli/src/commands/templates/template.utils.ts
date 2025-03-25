@@ -90,7 +90,7 @@ export class TemplateUtils {
                 console.log(chalk.blue('Installing dependencies...'));
                 await execa('npm', ['install'], {
                     cwd: outputDir,
-                    stdio: 'inherit'
+                    stdio: 'ignore'
                 });
             }
             // 6. Initialize git repository if requested

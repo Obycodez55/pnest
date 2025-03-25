@@ -1,5 +1,5 @@
 import { uniqueNamesGenerator, Config, names, adjectives } from 'unique-names-generator';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 import quotesy, { Quote } from 'quotesy';
 
@@ -30,7 +30,7 @@ export class RandomHelper{
     }
 
     public static getRandomFullName(): string {
-        return faker.name.findName();
+        return faker.person.fullName();
       }
     
       /**
@@ -38,7 +38,7 @@ export class RandomHelper{
        * @returns A string containing a first name
        */
       public static getRandomFirstName(): string {
-        return faker.name.firstName();
+        return faker.person.firstName();
       }
     
       /**
