@@ -13,12 +13,12 @@ export class TemplateUtils {
  */
     static async getAvailableTemplates(): Promise<Template[]> {
         try {
-            const templateDirs = await fs.readdir(TemplateUtils.TEMPLATES_PATH);
+            const templateDirs = await fs.readdir(this.TEMPLATES_PATH);
 
             const templates: Template[] = [];
 
             for (const dir of templateDirs) {
-                const metadataPath = path.join(TemplateUtils.TEMPLATES_PATH, dir, 'metadata.json');
+                const metadataPath = path.join(this.TEMPLATES_PATH, dir, 'metadata.json');
 
                 if (await fs.pathExists(metadataPath)) {
                     const metadata = await fs.readJson(metadataPath);
@@ -58,7 +58,7 @@ export class TemplateUtils {
             }
         }
 
-        const templateDir = path.join(TemplateUtils.TEMPLATES_PATH, template.name, 'template');
+        const templateDir = path.join(this.TEMPLATES_PATH, template.name, 'template');
 
         // Check if template directory exists
         if (!await fs.pathExists(templateDir)) {
@@ -71,12 +71,12 @@ export class TemplateUtils {
         await fs.ensureDir(outputDir);
 
         // 3. Copy template files
-        await TemplateUtils.copyTemplateFiles(templateDir, outputDir);
+        await this.copyTemplateFiles(templateDir, outputDir, options.docker);
 
         // 4. Process template files (replace placeholders)
         console.log(chalk.blue('Processing template files...'));
 
-        await TemplateUtils.processTemplateFiles(outputDir, {
+        await this.processTemplateFiles(outputDir, {
             projectName,
             projectDescription: `A NestJS project generated from the ${template.name} template`,
             // Add more variables as needed
@@ -121,7 +121,7 @@ export class TemplateUtils {
 
             if (stat.isDirectory()) {
                 // Recursively process subdirectories
-                await TemplateUtils.processTemplateFiles(filePath, variables);
+                await this.processTemplateFiles(filePath, variables);
             } else if (
                 // Only process text files
                 file.endsWith('.json') ||
@@ -147,10 +147,15 @@ export class TemplateUtils {
     /**
 * Copy files and directories from one location to another
 */
-    private static async copyTemplateFiles(sourceDir: string, targetDir: string): Promise<void> {
+    private static async copyTemplateFiles(sourceDir: string, targetDir: string, docker?: boolean): Promise<void> {
         const items = await fs.readdir(sourceDir);
+        let excludePatterns = [...EXCLUDE_PATTERNS]
+        if (!docker) {
+            excludePatterns = [...excludePatterns, 'docker-compose.yml', 'Dockerfile'];
+        }
+
         for (const item of items) {
-            if(EXCLUDE_PATTERNS.includes(item)) continue;
+            if(excludePatterns.includes(item)) continue;
             const sourcePath = path.join(sourceDir, item);
             const targetPath = path.join(targetDir, item);
 
@@ -158,7 +163,7 @@ export class TemplateUtils {
 
             if (stat.isDirectory()) {
                 await fs.ensureDir(targetPath);
-                await TemplateUtils.copyTemplateFiles(sourcePath, targetPath);
+                await this.copyTemplateFiles(sourcePath, targetPath);
             } else {
                 await fs.copyFile(sourcePath, targetPath);
             }

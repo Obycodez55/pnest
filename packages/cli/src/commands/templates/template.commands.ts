@@ -20,6 +20,7 @@ export class TemplateCommand{
             .option("-d, --directory <directory>", "Output directory")
             .option("-sg, --skip-git", "Initialize a git repository", false)
             .option("-si, --skip-install", "Skip installing dependencies", false)
+            .option("-do, --docker", "Use Docker for the project", false)
             .action(this.templateHandlers.createProjectFromTemplate);
 
         this.program

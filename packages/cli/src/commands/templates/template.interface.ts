@@ -9,6 +9,7 @@ export interface Template {
 export interface TemplateCreateOptions{
   skipGit: boolean;
   skipInstall: boolean;
+  docker: boolean;
 }
 
 export interface ProjectCreateOptions extends TemplateCreateOptions {

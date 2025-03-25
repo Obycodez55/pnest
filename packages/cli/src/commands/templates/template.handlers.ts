@@ -72,7 +72,8 @@ export class TemplateHandlers {
             // Get options
             let createOptions: TemplateCreateOptions = {
                 skipGit: options.skipGit,
-                skipInstall: options.skipInstall
+                skipInstall: options.skipInstall,
+                docker: options.docker
             };
             // Get output directory if not provided
             let outputDir = options.directory || projectName;

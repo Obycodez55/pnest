@@ -7,5 +7,5 @@ export const EXCLUDE_PATTERNS = [
     '.DS_Store',
     'npm-debug.log',
     'yarn-debug.log',
-    'yarn-error.log'
+    'yarn-error.log',
   ];
